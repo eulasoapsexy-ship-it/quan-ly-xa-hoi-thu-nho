@@ -28,8 +28,8 @@
         /* --- SIDEBAR (MENU KÍNH) --- */
         .sidebar {
             width: 280px;
-            background: rgba(255, 255, 255, 0.05); /* Rất trong suốt */
-            backdrop-filter: blur(20px); /* HIỆU ỨNG BLUR CỰC MẠNH */
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             padding: 40px 20px;
@@ -79,7 +79,6 @@
             position: relative;
         }
 
-        /* Trang trí các đốm sáng blur lơ lửng */
         .blob {
             position: absolute;
             width: 300px;
@@ -105,6 +104,31 @@
 
         .header h1 { font-size: 2rem; font-weight: 700; margin: 0; }
 
+        /* --- TOOLBAR (Nút thêm & Tìm kiếm) --- */
+        .toolbar {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            align-items: center;
+        }
+
+        .search-box {
+            padding: 10px 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(45, 212, 191, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            outline: none;
+            width: 300px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .search-box:focus {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(45, 212, 191, 0.3);
+        }
+
         /* --- BẢNG DỮ LIỆU --- */
         .table-container {
             background: rgba(255, 255, 255, 0.03);
@@ -115,73 +139,21 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { padding: 20px; color: #2dd4bf; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        td { padding: 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.95rem; color: #cbd5e1; }
+        tr:hover td { background: rgba(255, 255, 255, 0.02); color: #fff; }
 
-        th {
-            padding: 20px;
-            color: #2dd4bf;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        td {
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.95rem;
-            color: #cbd5e1;
-        }
-
-        tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
-            color: #fff;
-        }
-
-        /* --- NÚT BẤM (GLOSSY BUTTONS) --- */
-        .btn {
-            padding: 10px 20px;
-            border-radius: 12px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.85rem;
-        }
-
+        /* --- NÚT BẤM --- */
+        .btn { padding: 10px 20px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 0.85rem; }
         .btn:active { transform: scale(0.95); }
-
-        .btn-add {
-            background: linear-gradient(135deg, #2dd4bf, #0d9488);
-            color: white;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 15px -3px rgba(45, 212, 191, 0.3);
-        }
-
+        .btn-add { background: linear-gradient(135deg, #2dd4bf, #0d9488); color: white; box-shadow: 0 10px 15px -3px rgba(45, 212, 191, 0.3); }
         .btn-add:hover { box-shadow: 0 0 20px rgba(45, 212, 191, 0.6); }
-
-        .btn-edit {
-            background: rgba(245, 158, 11, 0.1);
-            color: #f59e0b;
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            margin-right: 8px;
-        }
-
+        .btn-edit { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); margin-right: 8px; }
         .btn-edit:hover { background: #f59e0b; color: #fff; }
-
-        .btn-delete {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
+        .btn-delete { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
         .btn-delete:hover { background: #ef4444; color: #fff; }
 
-        /* Scrollbar đẹp hơn */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -208,7 +180,10 @@
             <div style="font-size: 0.9rem; opacity: 0.7;">Chế độ: <b>Administrator</b></div>
         </div>
 
-        <button class="btn btn-add" id="btn-add">+ Thêm mặt hàng</button>
+        <div class="toolbar">
+            <button class="btn btn-add" id="btn-add">+ Thêm mặt hàng</button>
+            <input type="text" id="search-input" class="search-box" placeholder="🔍 Gõ mã hoặc tên sản phẩm để tìm nhanh...">
+        </div>
 
         <div class="table-container">
             <table>
@@ -264,26 +239,67 @@
     <script>
         const productList = document.getElementById('product-list');
         const btnAdd = document.getElementById('btn-add');
+        const searchInput = document.getElementById('search-input');
 
-        // Bắt sự kiện Xóa và Sửa
-        productList.addEventListener('click', function(e) {
-            if (e.target.classList.contains('btn-delete')) {
-                if (confirm('Bạn muốn gỡ bỏ sản phẩm này?')) {
-                    e.target.closest('tr').remove();
+        // 1. CHỨC NĂNG TÌM KIẾM TRỰC TIẾP (Live Search)
+        searchInput.addEventListener('keyup', function() {
+            let filter = searchInput.value.toLowerCase();
+            let rows = productList.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                let idCol = rows[i].cells[0].innerText.toLowerCase();
+                let nameCol = rows[i].cells[1].innerText.toLowerCase();
+                
+                // Nếu mã SP hoặc tên SP có chứa từ khóa thì hiện, không thì ẩn
+                if (idCol.includes(filter) || nameCol.includes(filter)) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
                 }
-            }
-            
-            if (e.target.classList.contains('btn-edit')) {
-                let row = e.target.closest('tr');
-                let newName = prompt('Tên sản phẩm mới:', row.cells[1].innerText);
-                let newPrice = prompt('Giá bán mới:', row.cells[3].innerText);
-
-                if (newName) row.cells[1].innerText = newName;
-                if (newPrice) row.cells[3].innerText = newPrice;
             }
         });
 
-        // Bắt sự kiện Thêm
+        // 2. CHỨC NĂNG SỬA VÀ XÓA (Đã nâng cấp API)
+        productList.addEventListener('click', function(e) {
+            let row = e.target.closest('tr');
+            let maSP = row.cells[0].innerText;
+
+            // Xử lý nút Xóa
+            if (e.target.classList.contains('btn-delete')) {
+                if (confirm(`Bạn chắc chắn muốn xóa sản phẩm ${maSP}?`)) {
+                    // Xóa trên giao diện
+                    row.remove();
+                    
+                    // Gửi lệnh xóa xuống PHP (Chỉ hoạt động khi có file api_delete.php)
+                    fetch('api_delete.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ma_sp: maSP })
+                    }).catch(err => console.log("Cần tạo api_delete.php để lưu DB", err));
+                }
+            }
+            
+            // Xử lý nút Sửa
+            if (e.target.classList.contains('btn-edit')) {
+                let newName = prompt('Tên sản phẩm mới:', row.cells[1].innerText);
+                let newPrice = prompt('Giá bán mới:', row.cells[3].innerText);
+
+                if (newName && newPrice) {
+                    // Cập nhật trên giao diện
+                    row.cells[1].innerText = newName;
+                    row.cells[3].innerText = newPrice;
+
+                    // Gửi dữ liệu mới xuống PHP (Chỉ hoạt động khi có file api_update.php)
+                    fetch('api_update.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ma_sp: maSP, ten_sp: newName, gia_ban: newPrice })
+                    }).catch(err => console.log("Cần tạo api_update.php để lưu DB", err));
+                }
+            }
+        });
+
+        // 3. CHỨC NĂNG THÊM MỚI (Lưu Database bằng AJAX)
         btnAdd.addEventListener('click', function() {
             let id = prompt('Nhập mã SP:');
             if (!id) return;
@@ -292,19 +308,38 @@
             let price = prompt('Nhập giá:');
             let stock = prompt('Nhập số lượng:');
 
-            let row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${id}</td>
-                <td>${name}</td>
-                <td>${category}</td>
-                <td>${price}</td>
-                <td>${stock}</td>
-                <td>
-                    <button class="btn btn-edit">Sửa</button>
-                    <button class="btn btn-delete">Xóa</button>
-                </td>
-            `;
-            productList.appendChild(row);
+            let productData = { ma_sp: id, ten_sp: name, danh_muc: category, gia_ban: price, ton_kho: stock };
+
+            fetch('api_add.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(productData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === 'success' || data.status === undefined) { 
+                    // Tạo dòng mới trên HTML
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${id}</td>
+                        <td>${name}</td>
+                        <td>${category}</td>
+                        <td>${price}</td>
+                        <td>${stock}</td>
+                        <td>
+                            <button class="btn btn-edit">Sửa</button>
+                            <button class="btn btn-delete">Xóa</button>
+                        </td>
+                    `;
+                    productList.appendChild(tr);
+                }
+            })
+            .catch(error => {
+                // Fallback: Vẫn thêm vào HTML nếu chưa chạy XAMPP để test giao diện
+                let tr = document.createElement('tr');
+                tr.innerHTML = `<td>${id}</td><td>${name}</td><td>${category}</td><td>${price}</td><td>${stock}</td><td><button class="btn btn-edit">Sửa</button><button class="btn btn-delete">Xóa</button></td>`;
+                productList.appendChild(tr);
+            });
         });
     </script>
 </body>
