@@ -1,1 +1,56 @@
+<div class="main-content">
+    <div class="top-navbar">
+        <h2>Điểm & Chuyên Cần</h2>
+        <div><span>Xin chào, Giảng viên</span></div>
+    </div>
 
+    <div class="content-body">
+        <div class="card">
+            <div class="card-header">
+                <h3>Bảng Điểm Học Phần: Lập Trình Web</h3>
+                <div>
+                    <button class="btn-add">Nhập Điểm Bằng Excel</button>
+                    <button class="btn-add" style="background-color: #27ae60;">+ Lưu Điểm</button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã SV</th>
+                        <th>Họ và Tên</th>
+                        <th>Chuyên Cần (%)</th>
+                        <th>Điểm Giữa Kỳ</th>
+                        <th>Điểm Cuối Kỳ</th>
+                        <th>Điểm Hệ 4</th>
+                        <th>Đánh Giá</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>UTT_68001</td>
+                        <td>Ngô Trường A</td>
+                        <td>
+                            <input type="number" value="100" style="width: 60px; padding: 3px;">
+                        </td>
+                        <td><input type="number" value="8.5" style="width: 60px; padding: 3px;"></td>
+                        <td><input type="number" value="9.0" style="width: 60px; padding: 3px;"></td>
+                        <td><strong>3.8</strong></td>
+                        <td style="color: #27ae60; font-weight: bold;">Đạt</td>
+                    </tr>
+                    <tr>
+                        <td>UTT_68002</td>
+                        <td>Trần Văn B</td>
+                        <td>
+                            <input type="number" value="70" style="width: 60px; padding: 3px; color: red;">
+                        </td>
+                        <td><input type="number" value="5.0" style="width: 60px; padding: 3px;"></td>
+                        <td><input type="number" value="0" style="width: 60px; padding: 3px;" disabled></td>
+                        <td><strong>F</strong></td>
+                        <td style="color: #c0392b; font-weight: bold;">Cấm thi (Vắng > 20%)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
