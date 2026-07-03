@@ -3,429 +3,527 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Lý Cửa Hàng</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>UTT Social - Mạng Xã Hội Sinh Viên</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            display: flex;
-            background-color: #f4f6f9;
-            height: 100vh;
-            overflow: hidden;
+        /* TÔNG MÀU CHỦ ĐẠO UTT: Cam (#e65c00) và Trắng (#ffffff) */
+        :root {
+            --utt-orange: #e65c00;
+            --utt-orange-hover: #cc5200;
+            --utt-orange-light: #ffebcc;
+            --bg-color: #f0f2f5;
         }
 
-        /* Thanh Sidebar bên trái */
-        .sidebar {
-            width: 260px;
-            background-color: #222d32;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-        }
-        .logo-container {
-            display: flex;
-            align-items: center;
-            padding: 20px 25px;
-            font-size: 22px;
-            font-weight: bold;
-            background-color: #1a2226;
-        }
-        .logo-container i {
-            margin-right: 12px;
-            color: #e67e22;
-        }
-        .menu-list {
-            list-style: none;
-            margin-top: 10px;
-        }
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 15px 25px;
-            color: #b8c7ce;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 15px;
-        }
-        .menu-item i {
-            margin-right: 15px;
-            width: 20px;
-            font-size: 16px;
-        }
-        .menu-item:hover, .menu-item.active {
-            color: #fff;
-            background-color: #1e282c;
-            border-left: 4px solid #3c8dbc;
-        }
-
-        /* Khu vực hiển thị nội dung chính bên phải */
-        .main-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
-
-        /* Thanh Navbar phía trên */
-        .navbar {
-            background-color: #fff;
-            height: 65px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-        }
-        .search-box input {
-            width: 320px;
-            padding: 8px 12px;
-            border: 1px solid #d2d6de;
-            border-radius: 4px;
-            outline: none;
-        }
-        .admin-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-        }
-        .admin-profile img {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1px solid #ddd;
-        }
-
-        /* Toàn bộ vùng Content chứa nội dung */
-        .content-wrapper {
-            padding: 30px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); height: 100vh; display: flex; flex-direction: column; overflow: hidden;}
         
-        /* Ẩn các Tab mặc định, chỉ hiện Tab có class .active */
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
+        /* ================= AUTHENTICATION UI ================= */
+        .auth-wrapper { display: flex; align-items: center; justify-content: center; height: 100vh; background: var(--bg-color); width: 100%; position: absolute; z-index: 9999; }
+        .auth-container { display: flex; max-width: 1000px; width: 100%; align-items: center; justify-content: space-between; padding: 20px; }
+        .auth-brand { flex: 1; padding-right: 50px; }
+        .auth-brand h1 { color: var(--utt-orange); font-size: 50px; margin-bottom: 10px; font-weight: 800;}
+        .auth-brand p { font-size: 24px; line-height: 32px; color: #1c1e21; }
+        .auth-box { background: white; padding: 20px; border-radius: 8px; width: 400px; box-shadow: 0 4px 12px rgba(230, 92, 0, 0.15); text-align: center; border-top: 5px solid var(--utt-orange);}
+        .auth-box input, .auth-box select { width: 100%; padding: 14px 16px; margin-bottom: 15px; border: 1px solid #dddfe2; border-radius: 6px; font-size: 15px; outline: none; }
+        .auth-box input:focus, .auth-box select:focus { border-color: var(--utt-orange); box-shadow: 0 0 0 2px var(--utt-orange-light); }
+        .btn-primary { width: 100%; background: var(--utt-orange); color: white; border: none; border-radius: 6px; font-size: 18px; font-weight: bold; padding: 12px; cursor: pointer; transition: 0.2s;}
+        .btn-primary:hover { background: var(--utt-orange-hover); }
+        .btn-success { background: #27ae60; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; padding: 10px 20px; cursor: pointer; margin-top: 15px; display: inline-block; }
+        .btn-success:hover { background: #219653; }
+        .forgot-link { display: block; color: var(--utt-orange); text-decoration: none; margin-top: 15px; font-size: 14px; cursor: pointer; }
+        .forgot-link:hover { text-decoration: underline; }
+        .auth-divider { border-bottom: 1px solid #dadde1; margin: 20px 0; }
 
-        .content-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        .content-header h2 {
-            font-size: 24px;
-            color: #222;
-            font-weight: 500;
-        }
-
-        /* Bộ lọc và các nút thao tác nhanh */
-        .toolbar-options {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .filter-select {
-            padding: 8px 15px;
-            border: 1px solid #d2d6de;
-            border-radius: 4px;
-            background-color: #fff;
-            outline: none;
-        }
-        .btn-add-primary {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 9px 18px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .btn-add-primary:hover {
-            background-color: #0069d9;
-        }
-
-        /* Định dạng bảng dữ liệu hiển thị giống thiết kế mẫu */
-        .table-card {
-            background-color: #fff;
-            border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            padding: 20px;
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-        th {
-            color: #444;
-            font-weight: 600;
-            padding: 14px 12px;
-            border-bottom: 2px solid #f4f4f4;
-            font-size: 15px;
-        }
-        td {
-            padding: 14px 12px;
-            border-bottom: 1px solid #f4f4f4;
-            color: #555;
-            font-size: 14px;
-            vertical-align: middle;
-        }
+        /* ================= SOCIAL LAYOUT ================= */
+        #social-app { display: none; height: 100vh; width: 100%; flex-direction: column; }
         
-        /* Các trạng thái Badge */
-        .badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .badge-success { background-color: #e6f7ed; color: #28a745; }
-        .badge-danger { background-color: #fce8e6; color: #dc3545; }
+        /* Navbar phong cách UTT */
+        .navbar { background-color: var(--utt-orange); color: white; padding: 0 20px; height: 60px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        .navbar h2 { font-weight: 800; margin-right: 30px; cursor: pointer; letter-spacing: 1px;}
+        .nav-center { display: flex; flex: 1; justify-content: center; height: 100%;}
+        .nav-center a { display: flex; align-items: center; padding: 0 25px; text-decoration: none; color: #ffebcc; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.2s;}
+        .nav-center a:hover { background: rgba(255,255,255,0.1); color: white;}
+        .nav-center a.active { color: white; border-bottom: 4px solid white; background: transparent; }
+        .nav-right { display: flex; align-items: center; }
+        .nav-right span { font-weight: bold; margin-right: 15px; font-size: 15px; }
+        .btn-logout { background: white; color: var(--utt-orange); font-weight: bold; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; transition: 0.2s;}
+        .btn-logout:hover { background: #f8f9fa; transform: scale(1.05); }
 
-        .price-text {
-            color: #0056b3;
-            font-weight: bold;
-        }
-        .img-placeholder {
-            width: 35px;
-            height: 35px;
-            object-fit: contain;
-        }
+        /* Layout Container: Tối ưu khung chat nhỏ lại */
+        .container { display: flex; flex: 1; overflow: hidden; padding: 20px; gap: 25px; max-width: 1300px; margin: 0 auto; width: 100%; }
 
-        /* Nút hành động Sửa/Xóa */
-        .action-buttons button {
-            padding: 5px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 13px;
-            color: #fff;
-            margin-right: 4px;
-        }
-        .btn-warning { background-color: #ffc107; color: #000 !important; }
-        .btn-danger { background-color: #dc3545; }
+        /* Feed & Posts */
+        .feed-section { flex: 1; overflow-y: auto; padding-right: 5px; } /* Mở rộng không gian Feed */
+        
+        .create-post { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; border-top: 3px solid var(--utt-orange);}
+        .create-post textarea { width: 100%; border: none; outline: none; resize: none; font-size: 16px; padding: 10px; background: var(--bg-color); border-radius: 8px; margin-bottom: 10px; }
+        .create-post button { background: var(--utt-orange); color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.2s;}
+        .create-post button:hover { background: var(--utt-orange-hover); }
+        
+        .post-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 15px; }
+        .post-header { display: flex; align-items: center; margin-bottom: 10px; }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(45deg, var(--utt-orange), #ff9800); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 10px; font-size: 18px; text-transform: uppercase;}
+        .post-author { font-weight: bold; color: #050505; }
+        .post-time { font-size: 12px; color: #65676b; }
+        .post-content { margin-bottom: 15px; font-size: 15px; line-height: 1.5; }
+        .post-actions { border-top: 1px solid #ced0d4; padding-top: 10px; display: flex; gap: 10px; }
+        .action-btn { flex: 1; padding: 8px; border: none; background: transparent; cursor: pointer; font-weight: 600; color: #65676b; border-radius: 4px; transition: 0.2s;}
+        .action-btn:hover { background: var(--bg-color); color: var(--utt-orange); }
+
+        /* Comment System UI */
+        .comments-section { margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; display: none; }
+        .comment-item { display: flex; margin-bottom: 10px; }
+        .comment-avatar { width: 32px; height: 32px; border-radius: 50%; background: #ccc; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 10px; font-size: 14px; text-transform: uppercase; color: white;}
+        .comment-body { background: var(--bg-color); padding: 8px 12px; border-radius: 18px; max-width: 100%; display: inline-block; }
+        .comment-author { font-weight: bold; font-size: 13px; margin-bottom: 2px; }
+        .comment-text { font-size: 14px; }
+        .comment-actions { margin-left: 42px; font-size: 12px; margin-bottom: 10px; display: flex; gap: 15px; }
+        .comment-actions span { cursor: pointer; color: #65676b; font-weight: bold; }
+        .comment-actions span:hover { text-decoration: underline; color: var(--utt-orange); }
+        .replies { margin-left: 42px; border-left: 2px solid #ddd; padding-left: 10px; }
+        .comment-input-box { display: flex; gap: 10px; margin-top: 10px; align-items: center; }
+        .comment-input-box input { flex: 1; padding: 10px 15px; border: 1px solid #ccc; border-radius: 20px; outline: none; background: var(--bg-color); transition: 0.2s;}
+        .comment-input-box input:focus { border-color: var(--utt-orange); }
+        .comment-input-box button { background: transparent; border: none; color: var(--utt-orange); font-weight: bold; cursor: pointer; padding: 0 10px;}
+
+        /* Profile Banner */
+        .profile-banner { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; margin-bottom: 20px; text-align: center; padding-bottom: 20px; }
+        .cover-photo { height: 180px; background: url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3') center/cover; }
+        .profile-avatar { width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; background: linear-gradient(45deg, var(--utt-orange), #ff9800); color: white; font-size: 50px; font-weight: bold; display: flex; align-items: center; justify-content: center; text-transform: uppercase; margin: -60px auto 10px auto; }
+        .profile-name { font-size: 24px; font-weight: bold; color: #050505; }
+        .profile-dept { color: #65676b; font-size: 15px; margin-top: 5px; }
+        .btn-edit-profile { background: var(--utt-orange); margin-top: 15px; padding: 8px 16px; border: none; border-radius: 4px; color: white; cursor: pointer; font-weight: bold; transition: 0.2s;}
+        .btn-edit-profile:hover { background: var(--utt-orange-hover); }
+
+        /* ================= CHAT SECTION: Nhỏ gọn, dạt sang phải ================= */
+        .chat-section { width: 300px; min-width: 300px; flex: none; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
+        .chat-header { padding: 12px; background: var(--utt-orange); color: white; font-weight: bold; text-align: center; font-size: 15px;}
+        .user-list { padding: 10px; overflow-y: auto; border-bottom: 1px solid #eee; max-height: 180px; }
+        .user-item { padding: 10px; cursor: pointer; border-radius: 6px; transition: 0.2s; font-weight: 500; display: flex; align-items: center; font-size: 14px;}
+        .user-item:hover, .user-item.active { background: var(--utt-orange-light); color: var(--utt-orange-hover);}
+        .user-dot { width: 10px; height: 10px; background: #42b72a; border-radius: 50%; margin-right: 10px; }
+        .chat-box { flex: 1; padding: 15px; overflow-y: auto; background: #fff; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 8px 12px; border-radius: 15px; max-width: 85%; font-size: 13px; line-height: 1.4; }
+        .msg-received { background: var(--bg-color); align-self: flex-start; color: #050505;}
+        .msg-sent { background: var(--utt-orange); color: white; align-self: flex-end; }
+        .chat-input { display: flex; padding: 10px; background: white; border-top: 1px solid #eee; }
+        .chat-input input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 20px; outline: none; margin-right: 10px; font-size: 13px;}
+        .chat-input input:focus { border-color: var(--utt-orange);}
+        .chat-input button { background: var(--utt-orange); color: white; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer; font-weight: bold; transition: 0.2s;}
+        .chat-input button:hover { background: var(--utt-orange-hover); }
+
+        /* Modal CSS cho Sửa Hồ Sơ */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center; }
+        .modal.show { display: flex; }
+        .modal-content { background-color: white; padding: 25px; border-radius: 8px; width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); animation: slideDown 0.2s; border-top: 5px solid var(--utt-orange);}
+        .modal-header { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; align-items: center;}
+        .modal-header h3 { color: var(--utt-orange); }
+        .form-group { margin-bottom: 15px; text-align: left;}
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: #555;}
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; outline: none; transition: 0.2s;}
+        .form-group input:focus { border-color: var(--utt-orange); }
+        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="logo-container">
-            <i class="fa-solid fa-box-open"></i> OrderManager
+    <div id="auth-wrapper" class="auth-wrapper">
+        <div class="auth-container">
+            <div class="auth-brand">
+                <h1>UTT Social</h1>
+                <p>Nền tảng kết nối, chia sẻ và giao lưu trực tuyến dành riêng cho sinh viên Đại học Công Nghệ GTVT.</p>
+            </div>
+            <div id="login-box" class="auth-box">
+                <input type="text" id="log_user" placeholder="Mã Sinh Viên / Tên đăng nhập">
+                <input type="password" id="log_pass" placeholder="Mật khẩu">
+                <button class="btn-primary" onclick="login()">Đăng Nhập</button>
+                <a class="forgot-link" onclick="alert('Vui lòng mang Thẻ sinh viên xuống Phòng Đào Tạo để được cấp lại mật khẩu!')">Quên mật khẩu?</a>
+                <div class="auth-divider"></div>
+                <button class="btn-success" onclick="toggleAuth('register')">Tạo tài khoản mới</button>
+            </div>
+            <div id="register-box" class="auth-box" style="display: none;">
+                <h2 style="margin-bottom: 15px; color: var(--utt-orange);">Đăng Ký Nhanh</h2>
+                <input type="text" id="reg_user" placeholder="Mã Sinh Viên (VD: UTT_01)">
+                <input type="password" id="reg_pass" placeholder="Mật khẩu mới">
+                <select id="reg_department">
+                    <option value="Khoa CNTT">Khoa Công Nghệ Thông Tin</option>
+                    <option value="Khoa Cầu Đường">Khoa Cầu Đường</option>
+                    <option value="Khoa Cơ Khí Ô Tô">Khoa Cơ Khí Ô Tô</option>
+                    <option value="Khoa Kinh Tế">Khoa Kinh Tế</option>
+                </select>
+                <button class="btn-primary" onclick="register()">Đăng Ký</button>
+                <div class="auth-divider"></div>
+                <a class="forgot-link" onclick="toggleAuth('login')">Đã có tài khoản? Đăng nhập</a>
+            </div>
         </div>
-        <ul class="menu-list">
-            <li class="menu-item" onclick="switchTab('tongquan')"><i class="fa-solid fa-chart-pie"></i> Tổng quan</li>
-            <li class="menu-item" onclick="switchTab('donhang')"><i class="fa-solid fa-cart-shopping"></i> Quản lý Đơn hàng</li>
-            <li class="menu-item active" id="menu-sanpham" onclick="switchTab('sanpham')"><i class="fa-solid fa-bag-shopping"></i> Sản phẩm</li>
-            <li class="menu-item" id="menu-khachhang" onclick="switchTab('khachhang')"><i class="fa-solid fa-users"></i> Khách hàng</li>
-            <li class="menu-item" onclick="switchTab('doanhthu')"><i class="fa-solid fa-file-invoice-dollar"></i> Báo cáo doanh thu</li>
-        </ul>
     </div>
 
-    <div class="main-container">
+    <div id="social-app">
+        <!-- Thanh điều hướng Cam Trắng -->
         <div class="navbar">
-            <div class="search-box">
-                <input type="text" placeholder="Tìm kiếm...">
+            <h2 onclick="switchTab('feed')">UTT Social</h2>
+            <div class="nav-center">
+                <a id="tab-feed" class="active" onclick="switchTab('feed')">Bảng Tin</a>
+                <a id="tab-profile" onclick="switchTab('profile')">Trang Cá Nhân</a>
             </div>
-            <div class="admin-profile">
-                <span>Quản trị viên</span>
-                <img src="https://via.placeholder.com/150" alt="Avatar">
+            <div class="nav-right">
+                <span id="current-user"></span>
+                <button class="btn-logout" onclick="logout()">Đăng Xuất</button>
             </div>
         </div>
 
-        <div class="content-wrapper">
-            
-            <div id="tab-sanpham" class="tab-content active">
-                <div class="content-header">
-                    <h2>Danh sách Sản phẩm</h2>
+        <div class="container">
+            <!-- Khu vực Feed chính -->
+            <div class="feed-section" id="main-content-area">
+                
+                <div id="profile-ui" style="display: none;">
+                    <div class="profile-banner">
+                        <div class="cover-photo"></div>
+                        <div class="profile-avatar" id="profile-letter">U</div>
+                        <div class="profile-name" id="profile-name">Tên Sinh Viên</div>
+                        <div class="profile-dept" id="profile-dept">Khoa...</div>
+                        <button class="btn-edit-profile" onclick="showEditProfile()">Chỉnh sửa hồ sơ cá nhân</button>
+                    </div>
                 </div>
-                <div class="toolbar-options">
-                    <select class="filter-select">
-                        <option>Tất cả danh mục</option>
-                        <option>Điện thoại</option>
-                        <option>Laptop</option>
-                        <option>Phụ kiện</option>
-                    </select>
-                    <button class="btn-add-primary">+ Thêm sản phẩm</button>
+
+                <div class="create-post">
+                    <textarea id="post_content" rows="3" placeholder="Hôm nay UTT có thông báo gì mới không?"></textarea>
+                    <button onclick="createPost()">Đăng bài viết</button>
                 </div>
-                <div class="table-card">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Hình Ảnh</th>
-                                <th>Mã SP</th>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Danh Mục</th>
-                                <th>Giá Bán</th>
-                                <th>Tồn Kho</th>
-                                <th>Thao Tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><img src="https://via.placeholder.com/40" class="img-placeholder" alt="SP"></td>
-                                <td><b>SP001</b></td>
-                                <td>iPhone 15 Pro Max</td>
-                                <td>Điện thoại</td>
-                                <td class="price-text">34.990.000 đ</td>
-                                <td><span class="badge badge-success">Còn hàng (15)</span></td>
-                                <td class="action-buttons">
-                                    <button class="btn-warning">Sửa</button>
-                                    <button class="btn-danger">Xóa</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><img src="https://via.placeholder.com/40" class="img-placeholder" alt="SP"></td>
-                                <td><b>SP002</b></td>
-                                <td>MacBook Air M2</td>
-                                <td>Laptop</td>
-                                <td class="price-text">28.500.000 đ</td>
-                                <td><span class="badge badge-success">Còn hàng (5)</span></td>
-                                <td class="action-buttons">
-                                    <button class="btn-warning">Sửa</button>
-                                    <button class="btn-danger">Xóa</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><img src="https://via.placeholder.com/40" class="img-placeholder" alt="SP"></td>
-                                <td><b>SP003</b></td>
-                                <td>Tai nghe AirPods Pro 2</td>
-                                <td>Phụ kiện</td>
-                                <td class="price-text">6.200.000 đ</td>
-                                <td><span class="badge badge-danger">Hết hàng</span></td>
-                                <td class="action-buttons">
-                                    <button class="btn-warning">Sửa</button>
-                                    <button class="btn-danger">Xóa</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <div id="feed_list"></div>
             </div>
 
-            <div id="tab-khachhang" class="tab-content">
-                <div class="content-header">
-                    <h2>Danh sách Khách hàng</h2>
+            <!-- Khu vực Chat nhỏ gọn bên phải -->
+            <div class="chat-section">
+                <div class="chat-header">Danh bạ sinh viên</div>
+                <div class="user-list" id="contact_list"></div>
+                <div class="chat-header" style="background: #fff; color: #333; border-bottom: 1px solid #eee; border-top: 1px solid #eee; font-size: 13px;">
+                    Đang chat với: <span id="chatting_with" style="color: var(--utt-orange);">Chưa chọn</span>
                 </div>
-                <div class="toolbar-options">
-                    <div></div>
-                    <button class="btn-add-primary" onclick="moModalThemKH()">+ Thêm khách hàng</button>
-                </div>
-                <div class="table-card">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Mã Khách hàng</th>
-                                <th>Tên Khách Hàng</th>
-                                <th>Số Điện Thoại</th>
-                                <th>Email</th>
-                                <th>Địa Chỉ</th>
-                                <th>Thao Tác</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bangKhachHang">
-                            <tr>
-                                <td colspan="6" style="text-align: center; color: #999;">Đang tải dữ liệu khách hàng...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="chat-box" id="chat_history"><div style="text-align: center; color: #888; margin-top: 20px; font-size: 12px;">Hãy chọn một người để bắt đầu</div></div>
+                <div class="chat-input">
+                    <input type="text" id="msg_content" placeholder="Soạn tin nhắn..." disabled onkeypress="if(event.key === 'Enter') sendMessage()">
+                    <button onclick="sendMessage()" id="btn_send" disabled>➤</button>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div id="tab-tongquan" class="tab-content"><h2>Nội dung Tổng quan</h2></div>
-            <div id="tab-donhang" class="tab-content"><h2>Nội dung Quản lý Đơn hàng</h2></div>
-            <div id="tab-doanhthu" class="tab-content"><h2>Nội dung Báo cáo Doanh thu</h2></div>
-
+    <!-- Modal Chỉnh Sửa Hồ Sơ Cá Nhân -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Cập nhật thông tin</h3>
+                <span style="cursor:pointer; font-weight:bold; font-size: 24px; color: #aaa;" onclick="closeEditModal()">&times;</span>
+            </div>
+            <div class="form-group"><label>Ngày sinh</label><input type="date" id="pro_dob"></div>
+            <div class="form-group"><label>Quê quán</label><input type="text" id="pro_hometown" placeholder="Nhập quê quán..."></div>
+            <div class="form-group"><label>Số điện thoại</label><input type="text" id="pro_phone" placeholder="Nhập số điện thoại..."></div>
+            <div class="form-group"><label>Email liên hệ</label><input type="email" id="pro_email" placeholder="Nhập địa chỉ email..."></div>
+            <div style="text-align: right; margin-top: 20px;">
+                <button style="background: #95a5a6; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; font-weight: bold;" onclick="closeEditModal()">Hủy</button>
+                <button style="background: #e65c00; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;" onclick="saveProfile()">Lưu thay đổi</button>
+            </div>
         </div>
     </div>
 
     <script>
-        function switchTab(tabName) {
-            // 1. Gỡ active trên tất cả các tab content
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
+        const API_AUTH = 'api_auth.php';
+        const API_SOCIAL = 'api_social.php';
+        const API_STUDENTS = 'api_students.php'; 
+        
+        let currentUser = '';
+        let currentDept = '';
+        let currentChatUser = '';
+        let currentView = 'feed'; 
+        let allPosts = []; 
+        let allComments = [];
+        let visibleCommentSections = {}; 
+        let isTyping = false; 
 
-            // 2. Gỡ active trên menu sidebar
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => item.classList.remove('active'));
+        document.addEventListener('focusin', e => { if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') isTyping = true; });
+        document.addEventListener('focusout', e => { if(e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') isTyping = false; });
 
-            // 3. Kích hoạt hiển thị Tab content được chọn
-            const targetTab = document.getElementById('tab-' + tabName);
-            if(targetTab) {
-                targetTab.classList.add('active');
-            }
+        function toggleAuth(type) {
+            document.getElementById('login-box').style.display = type === 'login' ? 'block' : 'none';
+            document.getElementById('register-box').style.display = type === 'register' ? 'block' : 'none';
+        }
 
-            // 4. Đổi trạng thái sáng nút menu đang chọn bằng cách tìm phần tử thủ công hoặc truyền event
-            event.currentTarget.classList.add('active');
+        function login() {
+            let u = document.getElementById('log_user').value;
+            let p = document.getElementById('log_pass').value;
+            let fd = new FormData(); fd.append('action', 'login'); fd.append('username', u); fd.append('password', p);
 
-            // 5. Nếu nhấn vào tab khách hàng, kích hoạt hàm gọi dữ liệu từ API PHP
-            if(tabName === 'khachhang') {
-                loadDanhSachKhachHang();
+            fetch(API_AUTH, { method: 'POST', body: fd }).then(res => res.json()).then(data => {
+                if(data.status === 'success') {
+                    localStorage.setItem('loggedUser', data.username);
+                    localStorage.setItem('loggedDept', data.department || 'Chưa cập nhật khoa');
+                    checkAuth();
+                } else { alert(data.message); }
+            });
+        }
+
+        function register() {
+            let u = document.getElementById('reg_user').value;
+            let p = document.getElementById('reg_pass').value;
+            let d = document.getElementById('reg_department').value;
+            if(!u || !p) { alert("Vui lòng điền đủ thông tin!"); return; }
+            let fd = new FormData(); fd.append('action', 'register'); fd.append('username', u); fd.append('password', p); fd.append('role', 'student'); fd.append('department', d);
+
+            fetch(API_AUTH, { method: 'POST', body: fd }).then(res => res.json()).then(data => {
+                alert(data.message);
+                if(data.status === 'success') toggleAuth('login');
+            });
+        }
+
+        function logout() { localStorage.clear(); checkAuth(); }
+
+        function checkAuth() {
+            currentUser = localStorage.getItem('loggedUser');
+            currentDept = localStorage.getItem('loggedDept');
+            
+            if (currentUser) {
+                document.getElementById('auth-wrapper').style.display = 'none';
+                document.getElementById('social-app').style.display = 'flex';
+                document.getElementById('current-user').innerText = currentUser;
+                document.getElementById('profile-letter').innerText = currentUser.charAt(0);
+                document.getElementById('profile-name').innerText = currentUser;
+                document.getElementById('profile-dept').innerText = currentDept;
+
+                switchTab('feed'); 
+                loadContacts();
+            } else {
+                document.getElementById('auth-wrapper').style.display = 'flex';
+                document.getElementById('social-app').style.display = 'none';
             }
         }
 
-        // Hàm gọi fetch tới API backend
-        function loadDanhSachKhachHang() {
-            fetch('api_khachhang.php')
-                .then(response => response.json())
+        function showEditProfile() { document.getElementById('editProfileModal').classList.add('show'); }
+        function closeEditModal() { document.getElementById('editProfileModal').classList.remove('show'); }
+
+        function saveProfile() {
+            let fd = new FormData();
+            fd.append('action', 'update_profile');
+            fd.append('student_code', currentUser); 
+            fd.append('dob', document.getElementById('pro_dob').value);
+            fd.append('hometown', document.getElementById('pro_hometown').value);
+            fd.append('phone', document.getElementById('pro_phone').value);
+            fd.append('email', document.getElementById('pro_email').value);
+
+            fetch(API_STUDENTS, { method: 'POST', body: fd })
+                .then(res => res.json())
                 .then(data => {
-                    let tbody = document.getElementById('bangKhachHang');
                     if(data.status === 'success') {
-                        let rows = '';
-                        if(data.data.length === 0) {
-                            tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Chưa có khách hàng nào.</td></tr>`;
-                            return;
-                        }
-                        data.data.forEach(kh => {
-                            rows += `
-                                <tr>
-                                    <td><b>${kh.ma_kh}</b></td>
-                                    <td>${kh.ten_kh}</td>
-                                    <td>${kh.sdt}</td>
-                                    <td>${kh.email ? kh.email : '---'}</td>
-                                    <td>${kh.dia_chi ? kh.dia_chi : '---'}</td>
-                                    <td class="action-buttons">
-                                        <button class="btn-warning" onclick="suaKH(${kh.id})">Sửa</button>
-                                        <button class="btn-danger" onclick="xoaKH(${kh.id})">Xóa</button>
-                                    </td>
-                                </tr>
-                            `;
-                        });
-                        tbody.innerHTML = rows;
-                    } else {
-                        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: red;">Lỗi: ${data.message}</td></tr>`;
-                    }
-                })
-                .catch(error => {
-                    console.error('Lỗi khi tải dữ liệu:', error);
-                    document.getElementById('bangKhachHang').innerHTML = `<tr><td colspan="6" style="text-align: center; color: red;">Không thể kết nối đến máy chủ.</td></tr>`;
+                        alert("Cập nhật thông tin thành công!");
+                        closeEditModal();
+                    } else { alert("Có lỗi xảy ra: " + (data.message || "Kiểm tra API")); }
                 });
         }
 
-        function moModalThemKH() {
-            alert('Tính năng mở form thêm khách hàng đang được xây dựng!');
+        function switchTab(tab) {
+            currentView = tab;
+            document.getElementById('tab-feed').classList.remove('active');
+            document.getElementById('tab-profile').classList.remove('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.getElementById('profile-ui').style.display = (tab === 'profile') ? 'block' : 'none';
+            loadPostsAndComments(); 
         }
-        function suaKH(id) {
-            alert('Sửa thông tin khách hàng có ID: ' + id);
+
+        function loadPostsAndComments() {
+            if(isTyping) return; 
+            Promise.all([
+                fetch(`${API_SOCIAL}?action=read_posts`).then(res => res.json()),
+                fetch(`${API_SOCIAL}?action=read_comments`).then(res => res.json())
+            ]).then(([posts, comments]) => {
+                allPosts = posts;
+                allComments = comments;
+                renderPosts();
+            });
         }
-        function xoaKH(id) {
-            if(confirm('Bạn có chắc chắn muốn xóa khách hàng này?')) {
-                alert('Xóa khách hàng đéo có ID: ' + id);
+
+        function renderPosts() {
+            if(isTyping) return; 
+            let html = '';
+            let postsToRender = (currentView === 'profile') ? allPosts.filter(p => p.author === currentUser) : allPosts;
+
+            if(postsToRender.length === 0 && currentView === 'profile') {
+                html = '<div style="text-align:center; padding: 20px; background: white; border-radius: 8px; color: #555;">Bạn chưa có bài đăng nào.</div>';
+            }
+
+            postsToRender.forEach(p => {
+                let letter = p.author.charAt(0);
+                let displayComments = visibleCommentSections[p.id] ? 'block' : 'none';
+                let commentCount = allComments.filter(c => c.post_id == p.id).length;
+
+                html += `
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="avatar">${letter}</div>
+                            <div><div class="post-author">${p.author}</div><div class="post-time">${p.created_at}</div></div>
+                        </div>
+                        <div class="post-content">${p.content.replace(/\n/g, '<br>')}</div>
+                        <div class="post-actions">
+                            <button class="action-btn" onclick="interactPost(${p.id}, 'like_post')">👍 Thích (${p.likes})</button>
+                            <button class="action-btn" onclick="toggleComments(${p.id})">💬 Bình luận (${commentCount})</button>
+                            <button class="action-btn" onclick="interactPost(${p.id}, 'share_post')">↪️ Chia sẻ (${p.shares})</button>
+                        </div>
+                        
+                        <div class="comments-section" id="comments-${p.id}" style="display: ${displayComments};">
+                            ${buildCommentTree(p.id)}
+                            <div class="comment-input-box">
+                                <input type="text" id="input-cmt-${p.id}-0" placeholder="Viết bình luận công khai...">
+                                <button onclick="submitComment(${p.id}, 0)">Đăng</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+            document.getElementById('feed_list').innerHTML = html;
+        }
+
+        function buildCommentTree(postId) {
+            let postCmts = allComments.filter(c => c.post_id == postId);
+            let roots = postCmts.filter(c => c.parent_id == 0);
+            let html = '';
+            roots.forEach(root => { html += renderSingleComment(root, postCmts); });
+            return html;
+        }
+
+        function renderSingleComment(comment, postCmts) {
+            let replies = postCmts.filter(c => c.parent_id == comment.id);
+            let repliesHtml = '';
+            replies.forEach(r => { repliesHtml += renderSingleComment(r, postCmts); });
+
+            let letter = comment.author.charAt(0);
+            return `
+                <div>
+                    <div class="comment-item">
+                        <div class="comment-avatar">${letter}</div>
+                        <div>
+                            <div class="comment-body">
+                                <div class="comment-author">${comment.author}</div>
+                                <div class="comment-text">${comment.content}</div>
+                            </div>
+                            <div class="comment-actions">
+                                <span onclick="interactComment(${comment.id})">Thích (${comment.likes})</span>
+                                <span onclick="document.getElementById('reply-box-${comment.id}').style.display='flex'">Phản hồi</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-input-box" id="reply-box-${comment.id}" style="display:none; margin-left: 42px; margin-bottom: 10px;">
+                        <input type="text" id="input-cmt-${comment.post_id}-${comment.id}" placeholder="Phản hồi ${comment.author}...">
+                        <button onclick="submitComment(${comment.post_id}, ${comment.id})">Gửi</button>
+                    </div>
+
+                    <div class="replies">${repliesHtml}</div>
+                </div>
+            `;
+        }
+
+        function toggleComments(postId) {
+            let sec = document.getElementById('comments-' + postId);
+            if (sec.style.display === 'block') {
+                sec.style.display = 'none';
+                visibleCommentSections[postId] = false;
+            } else {
+                sec.style.display = 'block';
+                visibleCommentSections[postId] = true;
             }
         }
+
+        function submitComment(postId, parentId) {
+            let inputId = `input-cmt-${postId}-${parentId}`;
+            let content = document.getElementById(inputId).value.trim();
+            if(!content) return;
+
+            let fd = new FormData();
+            fd.append('action', 'add_comment'); fd.append('post_id', postId); fd.append('parent_id', parentId); fd.append('author', currentUser); fd.append('content', content);
+
+            fetch(API_SOCIAL, { method: 'POST', body: fd }).then(() => {
+                document.getElementById(inputId).value = '';
+                isTyping = false; 
+                loadPostsAndComments(); 
+            });
+        }
+
+        function interactComment(id) {
+            let fd = new FormData(); fd.append('action', 'like_comment'); fd.append('id', id);
+            fetch(API_SOCIAL, { method: 'POST', body: fd }).then(() => loadPostsAndComments());
+        }
+
+        function createPost() {
+            let content = document.getElementById('post_content').value.trim();
+            if(!content) return;
+            let fd = new FormData(); fd.append('action', 'create_post'); fd.append('author', currentUser); fd.append('content', content);
+            fetch(API_SOCIAL, { method: 'POST', body: fd }).then(() => { 
+                document.getElementById('post_content').value = ''; 
+                isTyping = false;
+                loadPostsAndComments(); 
+            });
+        }
+
+        function interactPost(id, actionType) {
+            let fd = new FormData(); fd.append('action', actionType); fd.append('id', id);
+            fetch(API_SOCIAL, { method: 'POST', body: fd }).then(() => loadPostsAndComments());
+        }
+
+        function loadContacts() {
+            fetch(`${API_SOCIAL}?action=get_users`).then(res => res.json()).then(data => {
+                let html = '';
+                data.forEach(u => {
+                    if(u.username !== currentUser) {
+                        let activeClass = (u.username === currentChatUser) ? 'active' : '';
+                        html += `<div class="user-item ${activeClass}" onclick="openChat('${u.username}')"><div class="user-dot"></div>${u.username}</div>`;
+                    }
+                });
+                document.getElementById('contact_list').innerHTML = html;
+            });
+        }
+
+        function openChat(username) {
+            currentChatUser = username;
+            document.getElementById('chatting_with').innerText = username;
+            document.getElementById('msg_content').disabled = false;
+            document.getElementById('btn_send').disabled = false;
+            loadContacts();
+            loadMessages();
+        }
+
+        function loadMessages() {
+            if(!currentChatUser || isTyping) return; 
+            let fd = new FormData(); fd.append('action', 'read_messages'); fd.append('user1', currentUser); fd.append('user2', currentChatUser);
+            fetch(API_SOCIAL, { method: 'POST', body: fd }).then(res => res.json()).then(data => {
+                let html = '';
+                data.forEach(m => {
+                    let typeClass = (m.sender === currentUser) ? 'msg-sent' : 'msg-received';
+                    html += `<div class="msg ${typeClass}">${m.content}</div>`;
+                });
+                if(data.length === 0) html = `<div style="text-align: center; color: #888; margin-top: 20px; font-size: 12px;">Chưa có tin nhắn nào.</div>`;
+                let chatBox = document.getElementById('chat_history');
+                chatBox.innerHTML = html;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        }
+
+        function sendMessage() {
+            let content = document.getElementById('msg_content').value.trim();
+            if(!content || !currentChatUser) return;
+            let fd = new FormData(); fd.append('action', 'send_message'); fd.append('sender', currentUser); fd.append('receiver', currentChatUser); fd.append('content', content);
+            fetch(API_SOCIAL, { method: 'POST', body: fd }).then(() => { 
+                document.getElementById('msg_content').value = ''; 
+                isTyping = false;
+                loadMessages(); 
+            });
+        }
+
+        window.onload = function() {
+            checkAuth();
+            setInterval(() => {
+                if(currentUser) {
+                    if(currentChatUser) loadMessages();
+                    loadPostsAndComments(); 
+                }
+            }, 3000);
+        };
     </script>
 </body>
-</html>
+</html> 
