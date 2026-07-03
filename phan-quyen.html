@@ -1,0 +1,72 @@
+<div class="main-content">
+    <div class="top-navbar">
+        <h2>Hệ Thống Phân Quyền</h2>
+        <div><span>Xin chào, Super Admin</span></div>
+    </div>
+
+    <div class="content-body">
+        <div class="card">
+            <div class="card-header">
+                <h3>Quản Lý Tài Khoản & Vai Trò (Roles)</h3>
+                <button class="btn-add">+ Tạo Tài Khoản</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Tài khoản</th>
+                        <th>Tên Đăng Nhập</th>
+                        <th>Người Sở Hữu</th>
+                        <th>Vai Trò (Role)</th>
+                        <th>Trạng Thái</th>
+                        <th>Cập Nhật Quyền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ACC_001</td>
+                        <td>admin_tong</td>
+                        <td>Nguyễn Quản Trị</td>
+                        <td>
+                            <select style="padding: 5px;">
+                                <option value="admin" selected>Admin</option>
+                                <option value="giang_vien">Giảng Viên</option>
+                                <option value="ql_ktx">Quản lý KTX</option>
+                                <option value="sinh_vien">Sinh Viên</option>
+                            </select>
+                        </td>
+                        <td>Hoạt động</td>
+                        <td><button class="btn-action btn-edit">Lưu</button></td>
+                    </tr>
+                    <tr>
+                        <td>ACC_089</td>
+                        <td>gv_tranhoa</td>
+                        <td>Trần Thị Hoa</td>
+                        <td>
+                            <select style="padding: 5px;">
+                                <option value="admin">Admin</option>
+                                <option value="giang_vien" selected>Giảng Viên</option>
+                                <option value="ql_ktx">Quản lý KTX</option>
+                                <option value="sinh_vien">Sinh Viên</option>
+                            </select>
+                        </td>
+                        <td>Hoạt động</td>
+                        <td><button class="btn-action btn-edit">Lưu</button></td>
+                    </tr>
+                    <tr>
+                        <td>ACC_552</td>
+                        <td>utt_68001</td>
+                        <td>Ngô Trường A</td>
+                        <td>
+                            <select style="padding: 5px;" disabled>
+                                <option value="sinh_vien" selected>Sinh Viên</option>
+                            </select>
+                        </td>
+                        <td>Đang khóa</td>
+                        <td><button class="btn-action btn-edit">Lưu</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
