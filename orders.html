@@ -1,384 +1,51 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đơn Đặt Hàng - UniConnect</title>
-    <style>
-        /* Tái sử dụng CSS cơ bản từ trang chính */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<div class="main-content">
+    <div class="top-navbar">
+        <h2>Quản Lý Ký Túc Xá</h2>
+        <div><span>Xin chào, Ban Quản Lý KTX</span></div>
+    </div>
 
-        body {
-            background-color: #f0f2f5;
-            color: #1c1e21;
-        }
-
-        /* Thanh Điều Hướng (Navbar) */
-        header {
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 10px 20px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1877f2;
-            text-decoration: none;
-        }
-
-        .search-bar {
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 1px solid #ccc;
-            width: 250px;
-            outline: none;
-            background-color: #f0f2f5;
-        }
-
-        .user-profile img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        /* Bố Cục Chính (Main Layout) */
-        .container {
-            display: flex;
-            max-width: 1200px;
-            margin: 20px auto;
-            gap: 20px;
-            padding: 0 20px;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 25%;
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            .sidebar {
-                display: block;
-            }
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-bottom: 5px;
-            font-weight: 500;
-            text-decoration: none;
-            color: #1c1e21;
-        }
-
-        .menu-item:hover {
-            background-color: #e4e6eb;
-        }
-
-        .menu-item.active {
-            background-color: #e6f2ff;
-            color: #1877f2;
-        }
-
-        .menu-item span {
-            margin-right: 10px;
-            font-size: 20px;
-        }
-
-        /* Khu Vực Quản Lý Đơn Hàng */
-        .orders-content {
-            width: 100%;
-        }
-
-        @media (min-width: 768px) {
-            .orders-content {
-                width: 75%; /* Chiếm phần còn lại của màn hình */
-            }
-        }
-
-        .page-header {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .page-header h2 {
-            font-size: 20px;
-        }
-
-        .filter-btn {
-            padding: 8px 15px;
-            background-color: #e4e6eb;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .filter-btn:hover {
-            background-color: #d8dadf;
-        }
-
-        /* Thẻ Đơn Hàng (Order Card) */
-        .order-card {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #ced0d4;
-            padding-bottom: 10px;
-        }
-
-        .order-id {
-            font-weight: bold;
-            color: #1877f2;
-        }
-
-        .status {
-            font-weight: bold;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 13px;
-        }
-
-        .status.pending {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        .status.delivering {
-            background-color: #cce5ff;
-            color: #004085;
-        }
-
-        .status.completed {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .status.cancelled {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-        .order-body {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .order-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 8px;
-            background-color: #f0f2f5;
-        }
-
-        .order-details {
-            flex: 1;
-        }
-
-        .order-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .order-seller {
-            font-size: 14px;
-            color: #65676b;
-            margin-bottom: 5px;
-        }
-
-        .order-price {
-            font-weight: bold;
-            color: #e41e3f;
-            font-size: 16px;
-        }
-
-        .order-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .btn-cancel {
-            background-color: #e4e6eb;
-            color: #1c1e21;
-        }
-
-        .btn-cancel:hover {
-            background-color: #d8dadf;
-        }
-
-        .btn-contact {
-            background-color: #1877f2;
-            color: white;
-        }
-
-        .btn-contact:hover {
-            background-color: #166fe5;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <div class="navbar">
-            <a href="index.html" class="logo">UniConnect</a>
-            <input type="text" class="search-bar" placeholder="Tìm kiếm đơn hàng, sản phẩm...">
-            <div class="user-profile">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Student" alt="User Avatar">
+    <div class="content-body">
+        <div class="card">
+            <div class="card-header">
+                <h3>Danh Sách Phòng Nội Trú - Tòa A1</h3>
+                <button class="btn-add">+ Thêm Phòng Mới</button>
             </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã Phòng</th>
+                        <th>Sức Chứa</th>
+                        <th>Đang Ở</th>
+                        <th>Trưởng Phòng</th>
+                        <th>Tình trạng phí (Tháng này)</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>A1-101</td>
+                        <td>8 người</td>
+                        <td>8/8</td>
+                        <td>Lê Thị C</td>
+                        <td><span style="background-color: #2ecc71; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px;">Đã đóng</span></td>
+                        <td>
+                            <button class="btn-action btn-edit">Xem chi tiết</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>A1-102</td>
+                        <td>8 người</td>
+                        <td>6/8</td>
+                        <td>Phạm Văn D</td>
+                        <td><span style="background-color: #e74c3c; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px;">Chưa đóng</span></td>
+                        <td>
+                            <button class="btn-action" style="background-color: #3498db;">Thêm SV</button>
+                            <button class="btn-action btn-edit">Xem chi tiết</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </header>
-
-    <main class="container">
-        
-        <aside class="sidebar">
-            <a href="index.html" class="menu-item"><span>🏠</span> Bảng tin</a>
-            <a href="orders.html" class="menu-item active"><span>🛒</span> Đơn đặt hàng</a>
-            <div class="menu-item"><span>📚</span> Tài liệu học tập</div>
-            <div class="menu-item"><span>📅</span> Lịch Thi / Sự Kiện</div>
-        </aside>
-
-        <section class="orders-content">
-            
-            <div class="page-header">
-                <h2>🛒 Đơn hàng của bạn</h2>
-                <button class="filter-btn">Lọc trạng thái ▾</button>
-            </div>
-
-            <div id="ordersContainer">
-                
-                <div class="order-card" id="order-1024">
-                    <div class="order-header">
-                        <span class="order-id">Mã đơn: #1024</span>
-                        <span class="status delivering">🚚 Đang giao</span>
-                    </div>
-                    <div class="order-body">
-                        <img src="https://via.placeholder.com/80?text=Book" alt="Product" class="order-image">
-                        <div class="order-details">
-                            <div class="order-title">Giáo trình Giải tích 1 (Bản photo)</div>
-                            <div class="order-seller">Người bán: Cửa hàng photo cổng trường</div>
-                            <div class="order-price">35.000 đ</div>
-                        </div>
-                    </div>
-                    <div class="order-footer">
-                        <button class="btn btn-contact">💬 Nhắn tin người bán</button>
-                    </div>
-                </div>
-
-                <div class="order-card" id="order-1025">
-                    <div class="order-header">
-                        <span class="order-id">Mã đơn: #1025</span>
-                        <span class="status pending">⏳ Chờ xác nhận</span>
-                    </div>
-                    <div class="order-body">
-                        <img src="https://via.placeholder.com/80?text=Food" alt="Product" class="order-image">
-                        <div class="order-details">
-                            <div class="order-title">Combo Cơm gà xối mỡ + Trà đào</div>
-                            <div class="order-seller">Người bán: Căn tin khu B</div>
-                            <div class="order-price">45.000 đ</div>
-                        </div>
-                    </div>
-                    <div class="order-footer">
-                        <button class="btn btn-cancel" onclick="cancelOrder('order-1025')">❌ Hủy đơn</button>
-                        <button class="btn btn-contact">💬 Nhắn tin người bán</button>
-                    </div>
-                </div>
-
-                <div class="order-card" id="order-1010">
-                    <div class="order-header">
-                        <span class="order-id">Mã đơn: #1010</span>
-                        <span class="status completed">✅ Đã hoàn thành</span>
-                    </div>
-                    <div class="order-body">
-                        <img src="https://via.placeholder.com/80?text=Shirt" alt="Product" class="order-image">
-                        <div class="order-details">
-                            <div class="order-title">Áo đồng phục thể dục Size L</div>
-                            <div class="order-seller">Người bán: Phòng Công tác sinh viên</div>
-                            <div class="order-price">120.000 đ</div>
-                        </div>
-                    </div>
-                    <div class="order-footer">
-                        <button class="btn btn-contact">Mua lại</button>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-    </main>
-
-    <script>
-        // Chức năng Hủy đơn hàng
-        function cancelOrder(orderId) {
-            const confirmCancel = confirm("Bạn có chắc chắn muốn hủy đơn hàng này không?");
-            
-            if (confirmCancel) {
-                const orderCard = document.getElementById(orderId);
-                
-                // Cập nhật trạng thái hiển thị
-                const statusBadge = orderCard.querySelector('.status');
-                statusBadge.className = 'status cancelled';
-                statusBadge.innerHTML = '❌ Đã hủy';
-
-                // Xóa nút "Hủy đơn" để tránh bấm lại
-                const cancelBtn = orderCard.querySelector('.btn-cancel');
-                if (cancelBtn) {
-                    cancelBtn.remove();
-                }
-
-                alert("Hủy đơn hàng thành công!");
-            }
-        }
-    </script>
-</body>
-</html>
+    </div>
+</div>
