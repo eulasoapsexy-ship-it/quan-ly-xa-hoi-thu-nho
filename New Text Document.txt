@@ -1,0 +1,21 @@
+
+socialnetwork
+│
+├── css
+│   └── style.css
+│
+├── images
+│
+├── uploads
+│
+├── config
+│   └── db.php
+│
+├── login.php
+├── register.php
+├── newsfeed.php
+├── profile.php
+├── message.php
+├── logout.php
+└── index.php
+
